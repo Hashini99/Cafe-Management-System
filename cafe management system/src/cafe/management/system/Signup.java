@@ -4,17 +4,48 @@
  */
 package cafe.management.system;
 
+import javax.swing.JOptionPane;
+import model.User;
+import dao.UserDao;
 /**
  *
  * @author Hashini
  */
 public class Signup extends javax.swing.JFrame {
+    public String emailPattern="^[a-zA-Z0-9]+[@]+[a-zA-Z0-9]+[.]+[a-zA-Z0-9]+$";
+    public String mobilenumberPattern="^[0-9]*$";
 
-    /**
-     * Creates new form Signup
-     */
+    
     public Signup() {
         initComponents();
+        btnsave.setEnabled(false);
+    }
+    public void clear()
+    {
+        txtname.setText("");
+        txtemail.setText("");
+        txtmobile.setText("");
+        txtaddress.setText("");
+        txtsecurity.setText("");
+        txtanswer.setText("");
+        txtpassword.setText("");
+        btnsave.setEnabled(false);
+        
+    }
+    
+    public void validateFields(){
+        String name=txtname.getText();  
+        String email =txtemail.getText();
+        String mobilenumber= txtmobile.getText();
+        String address=txtaddress.getText();
+        String  password=txtpassword.getText();
+        String  security=txtsecurity.getText();
+        String  answer=txtanswer.getText();
+        
+        if(!name.equals("") && email.matches(emailPattern)&&mobilenumber.matches(mobilenumberPattern)&&mobilenumber.length()==10&&!address.equals("")&&!password.equals("")&&!security.equals("")&&!answer.equals(""))
+            btnsave.setEnabled(true);
+        else
+            btnsave.setEnabled(false);
     }
 
     /**
@@ -41,11 +72,11 @@ public class Signup extends javax.swing.JFrame {
         txtpassword = new javax.swing.JPasswordField();
         txtsecurity = new javax.swing.JTextField();
         txtanswer = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
+        btnsave = new javax.swing.JButton();
+        btnclear = new javax.swing.JButton();
+        btnexit = new javax.swing.JButton();
+        btnforgot = new javax.swing.JButton();
+        btnlogin = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setFont(new java.awt.Font("aKandyNew", 1, 14)); // NOI18N
@@ -75,8 +106,18 @@ public class Signup extends javax.swing.JFrame {
         jLabel8.setText("Answer");
 
         txtname.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        txtname.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtnameKeyReleased(evt);
+            }
+        });
 
         txtemail.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        txtemail.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtemailKeyReleased(evt);
+            }
+        });
 
         txtmobile.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         txtmobile.addActionListener(new java.awt.event.ActionListener() {
@@ -84,32 +125,77 @@ public class Signup extends javax.swing.JFrame {
                 txtmobileActionPerformed(evt);
             }
         });
+        txtmobile.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtmobileKeyReleased(evt);
+            }
+        });
 
         txtaddress.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        txtaddress.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtaddressKeyReleased(evt);
+            }
+        });
 
         txtpassword.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        txtpassword.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtpasswordKeyReleased(evt);
+            }
+        });
 
         txtsecurity.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        txtsecurity.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtsecurityKeyReleased(evt);
+            }
+        });
 
         txtanswer.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        txtanswer.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtanswerKeyReleased(evt);
+            }
+        });
 
-        jButton1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/save.png"))); // NOI18N
-        jButton1.setText("Save");
+        btnsave.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        btnsave.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/save.png"))); // NOI18N
+        btnsave.setText("Save");
+        btnsave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnsaveActionPerformed(evt);
+            }
+        });
 
-        jButton2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/clear.png"))); // NOI18N
-        jButton2.setText("Clear");
+        btnclear.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        btnclear.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/clear.png"))); // NOI18N
+        btnclear.setText("Clear");
+        btnclear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnclearActionPerformed(evt);
+            }
+        });
 
-        jButton3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/exit small.png"))); // NOI18N
-        jButton3.setText("Exit");
+        btnexit.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        btnexit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/exit small.png"))); // NOI18N
+        btnexit.setText("Exit");
+        btnexit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnexitActionPerformed(evt);
+            }
+        });
 
-        jButton4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jButton4.setText("Forgot Password?");
+        btnforgot.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        btnforgot.setText("Forgot Password?");
 
-        jButton5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jButton5.setText("Login");
+        btnlogin.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        btnlogin.setText("Login");
+        btnlogin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnloginActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -119,14 +205,14 @@ public class Signup extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(133, 133, 133)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnsave, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(98, 98, 98)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(btnclear, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(196, 196, 196)
-                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnforgot, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(135, 135, 135)
-                        .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(btnlogin, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(147, 147, 147)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -142,7 +228,7 @@ public class Signup extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btnexit, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                     .addComponent(txtsecurity, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 361, Short.MAX_VALUE)
                                     .addComponent(txtpassword, javax.swing.GroupLayout.Alignment.LEADING)
@@ -163,7 +249,7 @@ public class Signup extends javax.swing.JFrame {
                     .addComponent(txtname, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3)
                     .addComponent(txtemail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(12, 12, 12)
@@ -171,7 +257,7 @@ public class Signup extends javax.swing.JFrame {
                     .addComponent(jLabel4)
                     .addComponent(txtmobile, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel5)
                     .addComponent(txtaddress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -188,13 +274,13 @@ public class Signup extends javax.swing.JFrame {
                     .addComponent(txtanswer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(66, 66, 66)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3))
+                    .addComponent(btnsave)
+                    .addComponent(btnclear)
+                    .addComponent(btnexit))
                 .addGap(41, 41, 41)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton4)
-                    .addComponent(jButton5))
+                    .addComponent(btnforgot)
+                    .addComponent(btnlogin))
                 .addContainerGap(28, Short.MAX_VALUE))
         );
 
@@ -204,6 +290,75 @@ public class Signup extends javax.swing.JFrame {
     private void txtmobileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtmobileActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtmobileActionPerformed
+
+    private void btnloginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnloginActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnloginActionPerformed
+
+    private void btnexitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnexitActionPerformed
+       int a=JOptionPane .showConfirmDialog(null, "do you really want close this application?","select",JOptionPane.YES_NO_OPTION);
+       if(a==0)
+       {
+           System.exit(0);
+       }
+// TODO add your handling code here:
+    }//GEN-LAST:event_btnexitActionPerformed
+
+    private void btnsaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnsaveActionPerformed
+       
+        // TODO add your handling code here:
+        User user=new User();
+        user.setName(txtname.getText());
+        user.setEmail(txtemail.getText());
+        user.setMobilenumber(txtmobile.getText());
+        user.setAddress(txtaddress.getText());
+        user.setPassword(txtpassword.getText());
+        user.setSecurity(txtsecurity.getText());
+        user.setAnswer(txtanswer.getText());
+        UserDao.save(user);
+        clear();
+        
+    }//GEN-LAST:event_btnsaveActionPerformed
+
+    private void btnclearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnclearActionPerformed
+        // TODO add your handling code here:
+        clear();
+    }//GEN-LAST:event_btnclearActionPerformed
+
+    private void txtnameKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtnameKeyReleased
+        // TODO add your handling code here:
+        validateFields();
+    }//GEN-LAST:event_txtnameKeyReleased
+
+    private void txtemailKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtemailKeyReleased
+        // TODO add your handling code here:
+         validateFields();
+    }//GEN-LAST:event_txtemailKeyReleased
+
+    private void txtmobileKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtmobileKeyReleased
+        // TODO add your handling code here:
+         validateFields();
+    }//GEN-LAST:event_txtmobileKeyReleased
+
+    private void txtaddressKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtaddressKeyReleased
+        // TODO add your handling code here:
+         validateFields();
+    }//GEN-LAST:event_txtaddressKeyReleased
+
+    private void txtpasswordKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtpasswordKeyReleased
+        // TODO add your handling code here:
+         validateFields();
+    }//GEN-LAST:event_txtpasswordKeyReleased
+
+    private void txtsecurityKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtsecurityKeyReleased
+        // TODO add your handling code here:
+         validateFields();
+    }//GEN-LAST:event_txtsecurityKeyReleased
+
+    private void txtanswerKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtanswerKeyReleased
+        // TODO add your handling code here:
+         validateFields();
+    }//GEN-LAST:event_txtanswerKeyReleased
 
     /**
      * @param args the command line arguments
@@ -241,11 +396,11 @@ public class Signup extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
+    private javax.swing.JButton btnclear;
+    private javax.swing.JButton btnexit;
+    private javax.swing.JButton btnforgot;
+    private javax.swing.JButton btnlogin;
+    private javax.swing.JButton btnsave;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
